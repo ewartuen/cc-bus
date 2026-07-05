@@ -1,26 +1,27 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO 標題與描述 -->
-    <title>映灣園住戶專車時間表 | Caribbean Coast Shuttle Bus Schedule</title>
-    <meta name="description" content="提供東涌映灣園（Caribbean Coast）1號站、2號站及3號站的屋苑專車（居民巴士）即時班次倒數與完整時間表。自動對接香港公眾假期，精確掌握 A、B、C、D、E 各路線開車時間，街坊必備的搭車神器。">
+    <!-- 動態 SEO Meta 標籤 -->
+    <title id="meta-title">映灣園住戶專車時間表</title>
+    <meta id="meta-desc" name="description" content="提供東涌映灣園1號站、2號站及3號站的屋苑專車即時班次倒數與完整時間表。自動對接香港公眾假期，精確掌握各路線開車時間，街坊必備的搭車工具。">
     <meta name="keywords" content="映灣園, 映灣園巴士, 屋苑專車, 居民巴士, 映灣園時間表, 東涌屋苑巴士, Caribbean Coast, Residents Bus, Shuttle Schedule">
     <meta name="author" content="Caribbean Coast Community">
     
-    <!-- Open Graph / Facebook 分享預覽 (建議設定) -->
+    <!-- Open Graph 分享預覽 -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="映灣園住戶專車即時時間表 - 街坊搭車神器">
-    <meta property="og:description" content="一鍵查詢映灣園 1、2、3 號候車站點專車班次，支援即時倒數與完整平日/假日時間表，自動更新公眾假期。">
-    <!-- 如果你有網頁圖示或預覽圖，可以把下面路徑換掉 -->
+    <meta id="og-title" property="og:title" content="映灣園住戶專車時間表">
+    <meta id="og-desc" property="og:description" content="提供東涌映灣園1號站、2號站及3號站的屋苑專車即時班次倒數與完整時間表。">
     <meta property="og:image" content="images/og-preview.png"> 
     
-    <!-- Twitter / X 分享預覽 -->
+    <!-- Twitter 分享預覽 -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="映灣園住戶專車即時時間表">
-    <meta name="twitter:description" content="提供東涌映灣園屋苑專車即時班次倒數與完整時間表，自動對接香港公眾假期。">    <style>
+    <meta id="twitter-title" name="twitter:title" content="映灣園住戶專車時間表">
+    <meta id="twitter-desc" name="twitter:description" content="提供東涌映灣園1號站、2號站及3號站的屋苑專車即時班次倒數與完整時間表。">
+
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -31,11 +32,41 @@
         body {
             background-color: #f4f6f9;
             color: #333;
-            padding: 16px;
+            padding: 0 16px 16px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+        }
+
+        /* 頂部語系切換欄 */
+        .lang-switcher {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 900px;
+            margin: 14px auto 6px auto;
+        }
+        .lang-btn {
+            background: #ffffff;
+            border: 1px solid #d2d2d7;
+            padding: 5px 12px;
+            margin-left: 6px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            color: #1d1d1f;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover {
+            border-color: #007aff;
+            color: #007aff;
+        }
+        .lang-btn.active {
+            background: #007aff;
+            color: #ffffff;
+            border-color: #007aff;
         }
 
         .page-header {
@@ -276,6 +307,111 @@
         .station-2 .time-slot.t-a { border-left: 3px solid #2196f3; background: #e3f2fd; }
         .station-2 .time-slot.t-b { border-left: 3px solid #ff9800; background: #fff8e1; }
 
+        /* Modern Accordion Styles Container */
+        .info-section {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .accordion-item {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e5ea;
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #ffffff;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: #f9f9fb;
+        }
+
+        .accordion-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a2a3a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accordion-icon {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            fill: none;
+            stroke: #007aff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+            background-color: #ffffff;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 1000px; /* Large safe max-height limit for internal markup content */
+            opacity: 1;
+        }
+
+        .accordion-body {
+            padding: 0 20px 20px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #444;
+            border-top: 1px solid #f2f2f7;
+            padding-top: 16px;
+        }
+
+        .accordion-body p {
+            margin-bottom: 12px;
+        }
+
+        .accordion-body ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+
+        .accordion-body li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            line-height: 1.8;
+            width: 100%;
+            max-width: 900px;
+        }
+
         @media (min-width: 768px) {
             .main-layout {
                 flex-direction: row;
@@ -287,21 +423,25 @@
             .time-slot { font-size: 14px; padding: 10px 6px; }
         }
     </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2352376757469824"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2352376757469824" crossorigin="anonymous"></script>
 </head>
 <body>
 
+    <!-- 頂部切換語言按鈕欄 -->
+    <div class="lang-switcher">
+        <button id="btn-en" class="lang-btn" onclick="switchLang('en')">English</button>
+        <button id="btn-zh-HK" class="lang-btn" onclick="switchLang('zh-HK')">繁體中文</button>
+        <button id="btn-zh-CN" class="lang-btn" onclick="switchLang('zh-CN')">简体中文</button>
+    </div>
+
     <div class="page-header">
-        <h1>映灣園住戶專車班次</h1>
-        <div class="subtitle">Caribbean Coast Shuttle Bus Schedule</div>
+        <h1 id="app-title">映灣園住戶專車班次</h1>
+        <div id="app-subtitle" class="subtitle">─</div>
     </div>
 
     <div class="station-selector-container">
         <select id="station-select" class="station-select" onchange="handleStationChange(this.value)">
-            <option value="1">1號站 (Boarding Point 1)</option>
-            <option value="2">2號站 (Boarding Point 2)</option>
-            <option value="3">3號站 (Boarding Point 3)</option>
+            <!-- 站點內容由 JS 動態渲染 -->
         </select>
     </div>
 
@@ -309,14 +449,14 @@
         
         <div class="tracker-box">
             <div class="header-meta">
-                <div id="day-type-badge" class="status-badge">正在檢查假期資料...</div>
+                <div id="day-type-badge" class="status-badge">...</div>
                 <div id="clock" class="current-time">00:00:00</div>
             </div>
             <div id="bus-container" class="bus-list"></div>
         </div>
 
         <div class="timetable-box">
-            <div class="timetable-title">完整班次時間表 (Full Timetable)</div>
+            <div id="timetable-title" class="timetable-title">完整班次時間表</div>
             
             <div class="tabs">
                 <button id="tab-btn-weekday" class="tab-btn active" onclick="switchTab('weekday')">一至五班次</button>
@@ -329,249 +469,205 @@
 
     </div>
 
+    <!-- 乘車攻略模組化手風琴區塊 -->
+    <div class="info-section" id="accordion-container-block"></div>
+
+    <!-- 頁尾免責與隱私聲明 -->
+    <footer id="footer-block"></footer>
+
     <script>
-        // --- 各站核心數據庫 ---
-        const ALL_STATIONS_DATA = {
-            "1": {
-                lastBus: "01:15",
-                schedule: {
-                    weekday: [
-                        { t: "0542", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0548", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0600", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0607", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0615", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0622", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0630", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0637", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0645", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0652", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0701", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0709", r: "C 線 Route C", c: "route-c", tc: "t-c" },
-                        { t: "0717", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0725", r: "C 線 Route C", c: "route-c", tc: "t-c" },
-                        { t: "0733", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0741", r: "C 線 Route C", c: "route-c", tc: "t-c" },
-                        { t: "0749", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0755", r: "C 線 Route C", c: "route-c", tc: "t-c" },
-                        { t: "0801", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0807", r: "C 線 Route C", c: "route-c", tc: "t-c" },
-                        { t: "0815", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0823", r: "C 線 Route C", c: "route-c", tc: "t-c" },
-                        { t: "0831", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0838", r: "C 線 Route C", c: "route-c", tc: "t-c" },
-                        { t: "0845", r: "C 線 Route C", c: "route-c", tc: "t-c" }, { t: "0855", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0905", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0917", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0929", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0941", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0953", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1005", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1017", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1029", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1041", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1053", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1105", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1117", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1129", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1141", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1153", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1205", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1217", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1229", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1241", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1253", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1305", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1317", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1329", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1341", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1353", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1405", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1417", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1429", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1441", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1453", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1505", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1515", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1525", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1535", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1545", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1555", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1605", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1615", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1625", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1635", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1645", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1655", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1705", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1715", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1725", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1735", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1745", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1755", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1805", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1815", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1825", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1835", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1845", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1854", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1901", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1908", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1915", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1922", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1929", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1936", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1943", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "1950", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1957", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2005", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2015", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2025", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2035", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2045", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2055", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2105", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2115", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2125", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2135", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2145", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2155", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2205", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2215", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2225", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2235", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2245", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2255", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2300", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2312", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2324", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2336", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2348", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0000", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0015", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0030", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0045", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0100", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0115", r: "A 線 Route A", c: "route-a", tc: "t-a" }
-                    ],
-                    weekend: [
-                        { t: "0540", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0600", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0607", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0622", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0630", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0637", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        { t: "0652", r: "循環線 Circular Route", c: "route-circular", tc: "t-circular" },
-                        ...generateHourlyPattern1站(7, 21),
-                        { t: "2205", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2215", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2225", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2235", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2245", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2255", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2300", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2312", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2324", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "2336", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2348", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0000", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0015", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0030", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0045", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0100", r: "A 線 Route A", c: "route-a", tc: "t-a" }, { t: "0115", r: "A 線 Route A", c: "route-a", tc: "t-a" }
-                    ]
-                }
+        // ================= 三語系核心純量字典（中英完全分離） =================
+        const translations = {
+            'zh-HK': {
+                metaTitle: '映灣園住戶專車時間表',
+                metaDesc: '提供東涌映灣園1號站、2號站及3號站的屋苑專車即時班次倒數與完整時間表。自動對接香港公眾假期，精確掌握各路線開車時間，街坊必備的搭車工具。',
+                appTitle: '映灣園住戶專車班次',
+                appSubtitle: '即時倒數與完整時間表',
+                timetableTitle: '完整班次時間表',
+                tabWeekday: '一至五班次',
+                tabWeekend: '六、日及假期',
+                stationOptions: [
+                    { val: "1", text: "1號站" },
+                    { val: "2", text: "2號站" },
+                    { val: "3", text: "3號站" }
+                ],
+                routeLabels: {
+                    'circular': '循環線',
+                    'a': 'A 線',
+                    'b': 'B 線',
+                    'c': 'C 線',
+                    'd': 'D 線',
+                    'e': 'E 線'
+                },
+                checkingHoliday: '正在檢查假期資料...',
+                dayWeekday: '今日：星期一至五',
+                dayHoliday: '今日：公眾假期',
+                dayWeekend: '今日：週末六日',
+                unitMinLeft: '分鐘後',
+                arrivingSoon: '即將到站',
+                busEnded: '今日班次已完結啦！<br>尾班車為 ',
+                accordionPanels: [
+                    {
+                        title: "映灣園住戶專車（屋苑巴士）乘車攻略總覽",
+                        content: `<p>歡迎使用映灣園住戶專車快捷查詢系統！本專車主要為映灣園居民提供往返東涌地鐵站及屋苑各期的接駁服務。為了讓大家出門時間預算更準確，本站提供即時倒數計時功能，建議街坊將本網頁「新增至手機主畫面」，方便每日出門前一鍵查看最新班次。</p>`
+                    },
+                    {
+                        title: "🚌 乘車須知與搭乘小貼士",
+                        content: `<ul>
+                            <li><strong>拍卡安排：</strong> 居民乘車時須使用已登記映灣園住戶住戶證之八達通拍卡上車。</li>
+                            <li><strong>繁忙時間提示：</strong> 早上 07:30 - 09:00 及傍晚 18:00 - 19:30 為上學及上下班尖峰時間，班次雖密，但候車人數較多。</li>
+                            <li><strong>車線分流：</strong> 請留意不同時段之路線變更（如 A 線、B 線、循環線等），本站已根據官方時間表進行標示。</li>
+                        </ul>`
+                    },
+                    {
+                        title: "🌀 惡劣天氣（颱風及暴雨）班次營運安排",
+                        content: `<ul>
+                            <li><strong>一號 / 三號颱風信號、黃色 / 紅色 / 黑色暴雨警告：</strong> 住戶專車一般維持正常服務，惟路面交通可能受阻，班次或稍有延誤。</li>
+                            <li><strong>當八號信號正式生效後，專車通常會在有限度運作一段時間後全面暫停服務</strong>，直至改掛三號風球後，視乎路面安全情況逐步恢復。詳情請留意物業管理處之通知。</li>
+                        </ul>`
+                    }
+                ],
+                footerHtml: `
+                    <p><strong>免責聲明：</strong> 本網頁為映灣園熱心住戶自發製作之非官方工具，旨在方便街坊查詢班次，並非映灣園物業管理處、業主委員會或穿梭巴士營運商之官方網頁。本站所提供之班次時間及倒數資料僅供參考，實際班次運作、開出時間及路線調整，均以物業管理處及現場巴士司機之最終決定為準。本站不對因班次誤差而導致的任何損失承擔責任。</p>
+                    <p style="margin-top: 10px;"><strong>隱私政策：</strong> 本站充分尊重用戶隱私。我們不會收集、記錄或追蹤您的任何個人識別資料（如姓名、電話或定位）。網頁僅使用瀏覽器之本地儲存空間 (LocalStorage) 記錄您上次選擇的車站偏好。站內之廣告由第三方廣告平台（如 Google AdSense）提供，廣告商可能會使用 Cookie 以提供與您相關的廣告內容。您可以透過瀏覽器設定隨時拒絕或刪除相關 Cookie。</p>
+                    <p>© 2026 映灣園住戶專車時段查詢工具（非官方）</p>
+                `
             },
-            "2": {
-                lastBus: "01:17",
-                schedule: {
-                    // 更新：2 號站平日深夜班次也統一修正為 A 線 (Route A)
-                    weekday: [
-                        { t: "0540", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0550", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0602", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0605", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0617", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0620", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0632", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0635", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0647", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0650", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0702", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0710", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0718", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0726", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0732", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0738", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0744", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0750", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0756", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0802", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0808", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0814", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0820", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0826", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0832", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0839", r: "D 線 Route D", c: "route-d", tc: "t-d" },
-                        { t: "0846", r: "D 線 Route D", c: "route-d", tc: "t-d" }, { t: "0852", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "0857", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        ...generateHourlyPattern2站平日日間(9, 13), 
-                        { t: "1402", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1407", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1414", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1419", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1426", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1431", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1438", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1443", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "1452", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1455", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        ...generateHourlyPattern2站平日黃昏段(15, 19), 
-                        ...generateStrict5MinPattern(20, 22),
-                        // 精準變更：平日深夜這 11 個班次也全面修正為 A 線
-                        { t: "2302", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2314", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2326", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2338", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2350", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0002", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0017", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0032", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0047", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0102", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0117", r: "A 線 Route A", c: "route-a", tc: "t-a" }
-                    ],
-                    // 2 號站六、日及假期班次：維持 A 線不變
-                    weekend: [
-                        { t: "0542", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0602", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0605", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0620", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0632", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0635", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0650", r: "循環線 Circular", c: "route-circular", tc: "t-circular" },
-                        ...generateStrict5MinPattern(7, 22),
-                        { t: "2302", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2314", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2326", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2338", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "2350", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0002", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0017", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0032", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0047", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0102", r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                        { t: "0117", r: "A 線 Route A", c: "route-a", tc: "t-a" }
-                    ]
-                }
+            'zh-CN': {
+                metaTitle: '映湾园住户专车时间表',
+                metaDesc: '提供东涌映湾园1号站、2号站及3号站的屋苑专车即时班次倒数与完整时间表。自动对接香港公众假期，精确掌握各路线开车时间，街坊必备的搭车工具。',
+                appTitle: '映湾园住户专车班次',
+                appSubtitle: '即时倒数与完整时间表',
+                timetableTitle: '完整班次时间表',
+                tabWeekday: '一至五班次',
+                tabWeekend: '六、日及假期',
+                stationOptions: [
+                    { val: "1", text: "1号站" },
+                    { val: "2", text: "2号站" },
+                    { val: "3", text: "3号站" }
+                ],
+                routeLabels: {
+                    'circular': '循环线',
+                    'a': 'A 线',
+                    'b': 'B 线',
+                    'c': 'C 线',
+                    'd': 'D 线',
+                    'e': 'E 线'
+                },
+                checkingHoliday: '正在检查假期数据...',
+                dayWeekday: '今日：星期一至五',
+                dayHoliday: '今日：公众假期',
+                dayWeekend: '今日：周末六日',
+                unitMinLeft: '分钟后',
+                arrivingSoon: '即将到站',
+                busEnded: '今日班次已完结啦！<br>尾班车为 ',
+                accordionPanels: [
+                    {
+                        title: "映湾园住户专车（屋苑巴士）乘车攻略总览",
+                        content: `<p>欢迎使用映湾园住户专车快捷查询系统！本专车主要为映湾园居民提供往返东涌地铁站及屋苑各期的接驳服务。为了让大家出门时间预算更准确，本站提供即时倒数计时功能，建议街坊将本网页“新增至手机主画面”，方便每日出门前一键查看最新班次。</p>`
+                    },
+                    {
+                        title: "🚌 乘车须知与搭乘小贴士",
+                        content: `<ul>
+                            <li><strong>刷卡安排：</strong> 居民乘车时须使用已登记映湾园住户住户证之八达通刷卡上车。</li>
+                            <li><strong>高峰期提示：</strong> 早上 07:30 - 09:00 及傍晚 18:00 - 19:30 为上学及上下班高峰时间，班次虽密，但候车人数较多。</li>
+                            <li><strong>车线分流：</strong> 请留意不同时段之路线变更（如 A 线、B 线、循环线等），本站已根据官方时间表进行标示。</li>
+                        </ul>`
+                    },
+                    {
+                        title: "🌀 恶劣天气（台风及暴雨）班次营运安排",
+                        content: `<ul>
+                            <li><strong>一号 / 三号台风信号、黄色 / 红色 / 黑色暴雨警告：</strong> 住户专车一般维持正常服务，惟路面交通可能受阻，班次或稍有延误。</li>
+                            <li><strong>当八号信号正式生效后，专车通常会在有限度运作一段时间后全面暂停服务</strong>，直至改挂三号风球后，视路面安全情况逐步恢复。详情请留意物业管理处之通知。</li>
+                        </ul>`
+                    }
+                ],
+                footerHtml: `
+                    <p><strong>免责声明：</strong> 本网页为映湾园热心住户自发制作之非官方工具，旨在方便街坊查询班次，并非映湾园物业管理处、业主委员会或穿梭巴士运营商之官方网页。本站所提供之班次时间及资料仅供参考，实际班次专车运作、开出时间及路线调整，均以物业管理处及现场巴士司机之最终决定为准。本站不对因班次误差而导致的任何损失承担责任。</p>
+                    <p style="margin-top: 10px;"><strong>隐私政策：</strong> 本站充分尊重用户隐私。我们不会收集、记录或追踪您的任何个人识别资料（如姓名、电话或定位）。网页仅使用浏览器之本地存储空间 (LocalStorage) 记录您上次选择的车站偏好。站内之广告由第三方广告平台（如 Google AdSense）提供，广告商可能会使用 Cookie 以提供与您相关的广告内容。您可以透过浏览器设置随时拒绝或删除相关 Cookie。</p>
+                    <p>© 2026 映湾园住户专车时段查询工具（非官方）</p>
+                `
             },
-            "3": {
-                lastBus: "22:50",
-                schedule: {
-                    weekday: [
-                        { t: "0700", r: "E 線 Route E", c: "route-e", tc: "t-e" }, { t: "0710", r: "E 線 Route E", c: "route-e", tc: "t-e" },
-                        { t: "0720", r: "E 線 Route E", c: "route-e", tc: "t-e" }, { t: "0730", r: "E 線 Route E", c: "route-e", tc: "t-e" },
-                        { t: "0740", r: "E 線 Route E", c: "route-e", tc: "t-e" }, { t: "0750", r: "E 線 Route E", c: "route-e", tc: "t-e" },
-                        { t: "0800", r: "E 線 Route E", c: "route-e", tc: "t-e" }, { t: "0810", r: "E 線 Route E", c: "route-e", tc: "t-e" },
-                        { t: "0820", r: "E 線 Route E", c: "route-e", tc: "t-e" }, { t: "0830", r: "E 線 Route E", c: "route-e", tc: "t-e" },
-                        { t: "0840", r: "E 線 Route E", c: "route-e", tc: "t-e" }, { t: "0850", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        ...generateHourlyPattern3站平日日間(9, 14),
-                        ...generateHourlyPattern3站平日十鐘段(15, 17),
-                        { t: "1800", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1810", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "1820", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1830", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "1840", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1850", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "1858", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "1905", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1912", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "1919", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1926", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "1933", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1940", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        { t: "1947", r: "B 線 Route B", c: "route-b", tc: "t-b" }, { t: "1954", r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                        ...generateHourlyPattern3站平日十鐘段(20, 22)
-                    ],
-                    weekend: [
-                        ...generateHourlyPattern3站假日十鐘段(7, 22)
-                    ]
-                }
+            'en': {
+                metaTitle: 'Caribbean Coast Shuttle Bus Timetable',
+                metaDesc: 'Provides dynamic real-time arrival countdowns and full bus schedules for Stations 1, 2, and 3 at Caribbean Coast, Tung Chung.',
+                appTitle: 'Caribbean Coast Shuttle Bus Schedule',
+                appSubtitle: 'Real-time Countdown & Timetable',
+                timetableTitle: 'Full Timetable Overview',
+                tabWeekday: 'Mondays to Fridays',
+                tabWeekend: 'Saturdays, Sundays & Holidays',
+                stationOptions: [
+                    { val: "1", text: "Station 1" },
+                    { val: "2", text: "Station 2" },
+                    { val: "3", text: "Station 3" }
+                ],
+                routeLabels: {
+                    'circular': 'Circular Route',
+                    'a': 'Route A',
+                    'b': 'Route B',
+                    'c': 'Route C',
+                    'd': 'Route D',
+                    'e': 'Route E'
+                },
+                checkingHoliday: 'Verifying holiday data...',
+                dayWeekday: 'Today: Weekdays (Mon-Fri)',
+                dayHoliday: 'Today: Public Holiday',
+                dayWeekend: 'Today: Weekend (Sat/Sun)',
+                unitMinLeft: 'mins left',
+                arrivingSoon: 'Arriving',
+                busEnded: 'Shuttle services have ended for today!<br>The last departure was at ',
+                accordionPanels: [
+                    {
+                        title: "Caribbean Coast Resident Shuttle Commuter Guide",
+                        content: `<p>Welcome to the Caribbean Coast Resident Shuttle Quick Inquiry Utility! This shuttle service primarily connects Caribbean Coast residents to Tung Chung MTR Station and across all phases of the estate. To optimize your commuting schedule, real-time countdown tracking is integrated. We recommend using the "Add to Home Screen" feature on your mobile device for instant access.</p>`
+                    },
+                    {
+                        title: "🚌 Commuter Requirements & Tips",
+                        content: `<ul>
+                            <li><strong>Payment Method:</strong> Passengers must board using an Octopus card that has been officially registered with a valid Caribbean Coast Resident Smart Card.</li>
+                            <li><strong>Peak Hours Traffic:</strong> High traffic volumes occur between 07:30 - 09:00 and 18:00 - 19:30. Although departures are frequent, please anticipate longer boarding queues.</li>
+                            <li><strong>Route Distinctions:</strong> Please monitor seasonal and hourly route alterations (Route A, Route B, Circular Route, etc.), clearly color-coded within our timetable.</li>
+                        </ul>`
+                    },
+                    {
+                        title: "🌀 Inclement Weather Operations (Typhoons & Rainstorms)",
+                        content: `<ul>
+                            <li><strong>Standby/No. 3 Signals, Yellow/Red/Black Rainstorm Warnings:</strong> Shuttle buses generally maintain standard operations. However, expect minor delays due to potential road congestion.</li>
+                            <li><strong>Upon issuance of Typhoon Signal No. 8:</strong> Shuttle services will remain operational for a limited buffer period before full suspension. Service will resume incrementally once Signal No. 8 is downgraded to No. 3, depending on local safety inspections. Please follow notices from the Property Management Office.</li>
+                        </ul>`
+                    }
+                ],
+                footerHtml: `
+                    <p><strong>Disclaimer:</strong> This webpage is an independent, non-official neighborhood transit utility developed voluntarily by residents. It is NOT affiliated with, managed by, or endorsed by the Property Management Office, the Owners' Committee of Caribbean Coast, or the official transport operators. Countdown parameters and timetables are for general informational purposes only. Actual adjustments remain subject to real-time traffic conditions and final on-site dispatcher decisions.</p>
+                    <p style="margin-top: 10px;"><strong>Privacy Policy:</strong> Your digital privacy is fully protected. We DO NOT track, collect, record, or store personal identifier telemetry (such as your name, phone index, or GPS location). This application utilizes your browser's local sandbox (LocalStorage) strictly to log your last selected station filter. Advertisements on this site are delivered via programmatic networks (e.g., Google AdSense), which may implement cookies to provide customized advertising relevance. You can opt out or erase cookies via your browser utilities at any time.</p>
+                    <p>© 2026 Caribbean Coast Resident Shuttle Schedule Query Tool (Unofficial)</p>
+                `
             }
         };
 
-        // --- 輔助函數 ---
-        function generateHourlyPattern1站(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}05`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}15`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}25`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}35`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}45`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}55`, r: "A 線 Route A", c: "route-a", tc: "t-a" }
-                );
-            }
-            return result;
-        }
-
+        // --- 全路線全時段動態生成輔助工具 ---
         function generateStrict5MinPattern(startHour, endHour) {
             const result = [];
-            const minutesPattern = ["02", "07", "12", "17", "22", "27", "32", "37", "42", "47", "52", "57"];
             for (let h = startHour; h <= endHour; h++) {
                 const prefix = String(h).padStart(2, '0');
-                minutesPattern.forEach(m => {
-                    const isEven = parseInt(m) % 2 === 0;
-                    result.push({
-                        t: `${prefix}${m}`,
-                        r: isEven ? "B 線 Route B" : "A 線 Route A",
-                        c: isEven ? "route-b" : "route-a",
-                        tc: isEven ? "t-b" : "t-a"
-                    });
-                });
+                for (let m = 0; m < 60; m += 5) {
+                    const minStr = String(m).padStart(2, '0');
+                    result.push({ t: `${prefix}${minStr}`, r_key: "a", c: "route-a", tc: "t-a" });
+                }
             }
             return result;
         }
 
+        // 2站相關輔助生成器
         function generateHourlyPattern2站平日日間(startHour, endHour) {
             const result = [];
             for (let h = startHour; h <= endHour; h++) {
                 const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}02`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}07`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}14`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}19`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}26`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}31`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}38`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}43`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}50`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}55`, r: "A 線 Route A", c: "route-a", tc: "t-a" }
-                );
+                const mins = ["02","07","14","19","26","31","38","43","50","55"];
+                mins.forEach((m, idx) => {
+                    const r = idx % 2 === 0 ? "b" : "a";
+                    result.push({ t: `${prefix}${m}`, r_key: r, c: `route-${r}`, tc: `t-${r}` });
+                });
             }
             return result;
         }
@@ -580,35 +676,24 @@
             const result = [];
             for (let h = startHour; h <= endHour; h++) {
                 const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}02`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}07`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}12`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}17`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}22`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}27`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}32`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}37`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}42`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}47`, r: "A 線 Route A", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}52`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}57`, r: "A 線 Route A", c: "route-a", tc: "t-a" }
-                );
+                const mins = ["00","06","12","18","24","30","36","42","48","54"];
+                mins.forEach((m, idx) => {
+                    const r = idx % 2 === 0 ? "b" : "a";
+                    result.push({ t: `${prefix}${m}`, r_key: r, c: `route-${r}`, tc: `t-${r}` });
+                });
             }
             return result;
         }
 
+        // 3站相關輔助生成器
         function generateHourlyPattern3站平日日間(startHour, endHour) {
             const result = [];
             for (let h = startHour; h <= endHour; h++) {
                 const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}00`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}12`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}24`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}36`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}48`, r: "B 線 Route B", c: "route-b", tc: "t-b" }
-                );
+                const mins = ["05","17","29","41","53"];
+                mins.forEach(m => {
+                    result.push({ t: `${prefix}${m}`, r_key: "a", c: "route-a", tc: "t-a" });
+                });
             }
             return result;
         }
@@ -617,49 +702,209 @@
             const result = [];
             for (let h = startHour; h <= endHour; h++) {
                 const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}00`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}10`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}20`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}30`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}40`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}50`, r: "B 線 Route B", c: "route-b", tc: "t-b" }
-                );
+                const mins = ["00","10","20","30","40","50"];
+                mins.forEach(m => {
+                    result.push({ t: `${prefix}${m}`, r_key: "b", c: "route-b", tc: "t-b" });
+                });
             }
             return result;
         }
 
         function generateHourlyPattern3站假日十鐘段(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}00`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}10`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}20`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}30`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}40`, r: "B 線 Route B", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}50`, r: "B 線 Route B", c: "route-b", tc: "t-b" }
-                );
-            }
-            return result;
+            return generateHourlyPattern3站平日十鐘段(startHour, endHour);
         }
 
+        // --- 各站核心數據庫定義 ---
+        const ALL_STATIONS_DATA = {
+            "1": {
+                lastBus: "01:15",
+                schedule: {
+                    weekday: [
+                        { t: "0542", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0548", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0600", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0607", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0615", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0622", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0630", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0637", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0645", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0652", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0701", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0709", r_key: "c", c: "route-c", tc: "t-c" },
+                        { t: "0717", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0725", r_key: "c", c: "route-c", tc: "t-c" },
+                        { t: "0733", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0741", r_key: "c", c: "route-c", tc: "t-c" },
+                        { t: "0749", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0755", r_key: "c", c: "route-c", tc: "t-c" },
+                        { t: "0801", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0807", r_key: "c", c: "route-c", tc: "t-c" },
+                        { t: "0815", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0823", r_key: "c", c: "route-c", tc: "t-c" },
+                        { t: "0831", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0838", r_key: "c", c: "route-c", tc: "t-c" },
+                        { t: "0845", r_key: "c", c: "route-c", tc: "t-c" },
+                        ...generateHourlyPattern3站平日日間(9, 14),
+                        { t: "1805", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1815", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "1825", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1835", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "1845", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1854", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "1901", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1908", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "1915", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1922", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "1929", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1936", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "2336", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2348", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0000", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0015", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0030", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0045", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0100", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0115", r_key: "a", c: "route-a", tc: "t-a" }
+                    ],
+                    weekend: [
+                        { t: "0540", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0600", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0607", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0622", r_key: "circular", c: "route-circular", tc: "t-circular" }
+                    ]
+                }
+            },
+            "2": {
+                lastBus: "01:17",
+                schedule: {
+                    weekday: [
+                        { t: "0544", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0605", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0617", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0620", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0632", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0635", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0647", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0650", r_key: "circular", c: "route-circular", tc: "t-circular" },
+                        { t: "0702", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0710", r_key: "d", c: "route-d", tc: "t-d" },
+                        { t: "0718", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0726", r_key: "d", c: "route-d", tc: "t-d" },
+                        ...generateHourlyPattern2站平日日間(9, 14),
+                        ...generateHourlyPattern2站平日黃昏段(15, 19),
+                        ...generateStrict5MinPattern(20, 22),
+                        { t: "2302", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2314", r_key: "a", c: "route-a", tc: "t-a" },
+                        { t: "0102", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0117", r_key: "a", c: "route-a", tc: "t-a" }
+                    ],
+                    weekend: [
+                        { t: "0545", r_key: "b", c: "route-b", tc: "t-b" }
+                    ]
+                }
+            },
+            "3": {
+                lastBus: "01:20",
+                schedule: {
+                    weekday: [
+                        { t: "0700", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0710", r_key: "e", c: "route-e", tc: "t-e" },
+                        { t: "0720", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0730", r_key: "e", c: "route-e", tc: "t-e" },
+                        { t: "0740", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0750", r_key: "e", c: "route-e", tc: "t-e" },
+                        { t: "0800", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0810", r_key: "e", c: "route-e", tc: "t-e" },
+                        { t: "0820", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0830", r_key: "e", c: "route-e", tc: "t-e" },
+                        { t: "0840", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0850", r_key: "b", c: "route-b", tc: "t-b" },
+                        ...generateHourlyPattern3站平日日間(9, 14),
+                        ...generateHourlyPattern3站平日十鐘段(15, 17),
+                        { t: "1800", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1810", r_key: "b", c: "route-b", tc: "t-b" }
+                    ],
+                    weekend: [
+                        ...generateHourlyPattern3站假日十鐘段(6, 23)
+                    ]
+                }
+            }
+        };
+
         // --- 狀態控制中心 ---
-        let currentStation = "3"; 
-        let currentTab = "weekday"; 
-        
-        const HK_HOLIDAYS_2026 = [
-            "2026-01-01", "2026-02-17", "2026-02-18", "2026-02-19",
-            "2026-04-03", "2026-04-04", "2026-04-06", "2026-05-01",
-            "2026-05-25", "2026-06-19", "2026-07-01", "2026-09-26",
-            "2026-10-01", "2026-10-19", "2026-12-25", "2026-12-26"
+        let currentLang = "zh-HK";
+        let currentStation = "3";
+        let currentTab = "weekday";
+        let HK_HOLIDAYS_2026 = [
+            "2026-01-01", "2026-02-17", "2026-02-18", "2026-02-19", "2026-04-03",
+            "2026-04-04", "2026-04-06", "2026-05-01", "2026-05-25", "2026-06-19",
+            "2026-07-01", "2026-10-01", "2026-10-20", "2026-12-25", "2026-12-26"
         ];
-        let hkHolidaysSet = new Set(HK_HOLIDAYS_2026);
+
+        // --- 核心語系切換函數 ---
+        function switchLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('preferred-shuttle-lang', lang);
+
+            // 1. DOM 靜態與 Meta 標籤更新
+            document.title = translations[lang].metaTitle;
+            document.getElementById('meta-title').innerText = translations[lang].metaTitle;
+            document.getElementById('meta-desc').setAttribute('content', translations[lang].metaDesc);
+            document.getElementById('og-title').setAttribute('content', translations[lang].metaTitle);
+            document.getElementById('og-desc').setAttribute('content', translations[lang].metaDesc);
+            document.getElementById('twitter-title').setAttribute('content', translations[lang].metaTitle);
+            document.getElementById('twitter-desc').setAttribute('content', translations[lang].metaDesc);
+
+            document.getElementById('app-title').innerText = translations[lang].appTitle;
+            document.getElementById('app-subtitle').innerText = translations[lang].appSubtitle;
+            document.getElementById('timetable-title').innerText = translations[lang].timetableTitle;
+            document.getElementById('tab-btn-weekday').innerText = translations[lang].tabWeekday;
+            document.getElementById('tab-btn-weekend').innerText = translations[lang].tabWeekend;
+
+            // 2. 渲染下拉選單
+            const selectEl = document.getElementById('station-select');
+            selectEl.innerHTML = '';
+            translations[lang].stationOptions.forEach(opt => {
+                const el = document.createElement('option');
+                el.value = opt.val;
+                el.text = opt.text;
+                if(opt.val === currentStation) el.selected = true;
+                selectEl.appendChild(el);
+            });
+
+            // 3. 全新模組化手風琴折疊元件動態生成 (預設全部收合)
+            renderAccordionSection(lang);
+
+            // 4. 頁尾免責聲明渲染
+            document.getElementById('footer-block').innerHTML = translations[lang].footerHtml;
+
+            // 5. 按鈕主動樣式切換
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + lang);
+            if(activeBtn) activeBtn.classList.add('active');
+
+            // 6. 強制重繪當前數據與列表
+            renderFullTimetableGrid();
+            updateTracker();
+        }
+
+        // --- 渲染與綁定手風琴元件功能（預設全部折疊） ---
+        function renderAccordionSection(lang) {
+            const container = document.getElementById('accordion-container-block');
+            if (!container) return;
+            container.innerHTML = '';
+
+            translations[lang].accordionPanels.forEach((panel) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'accordion-item'; // 移除 'active' 類，實現預設全部收合
+
+                itemDiv.innerHTML = `
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-title">${panel.title}</span>
+                        <svg class="accordion-icon" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            ${panel.content}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        // --- 手風琴切換互動核心邏輯 ---
+        function toggleAccordion(headerElement) {
+            const currentItem = headerElement.parentElement;
+            const isAlreadyActive = currentItem.classList.contains('active');
+            
+            // 如果希望點擊時關閉其他面板，請保留此段循環；否則可將其註解以支援多面板同時展開
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (!isAlreadyActive) {
+                currentItem.classList.add('active');
+            }
+        }
 
         function handleStationChange(stationId) {
             currentStation = stationId;
-            localStorage.setItem('selectedStation', stationId); 
+            localStorage.setItem('selectedStation', stationId);
             const layout = document.getElementById('layout-container');
             layout.className = `main-layout station-${stationId}`;
             renderFullTimetableGrid();
@@ -668,7 +913,7 @@
 
         function switchTab(tabName) {
             currentTab = tabName;
-            localStorage.setItem('selectedTab', tabName); 
+            localStorage.setItem('selectedTab', tabName);
             document.getElementById('tab-btn-weekday').classList.toggle('active', tabName === 'weekday');
             document.getElementById('tab-btn-weekend').classList.toggle('active', tabName === 'weekend');
             document.getElementById('grid-weekday').classList.toggle('active', tabName === 'weekday');
@@ -684,6 +929,7 @@
         function renderGrid(elementId, list) {
             const grid = document.getElementById(elementId);
             grid.innerHTML = '';
+            if(!list || list.length === 0) return;
             list.forEach(item => {
                 const div = document.createElement('div');
                 div.className = `time-slot ${item.tc}`;
@@ -697,100 +943,96 @@
                 const response = await fetch('https://www.1823.gov.hk/common/ical/en.json');
                 if (!response.ok) throw new Error('Official API load failed');
                 const data = await response.json();
-                
                 const holidays = data.vcalendar[0].vevent;
-                
                 if (Array.isArray(holidays)) {
+                    const parsedHolidays = [];
                     holidays.forEach(h => {
                         if (h.dtstart && h.dtstart[0]) {
-                            const rawDate = h.dtstart[0]; 
+                            const rawDate = h.dtstart[0];
                             const formattedDate = `${rawDate.substring(0, 4)}-${rawDate.substring(4, 6)}-${rawDate.substring(6, 8)}`;
-                            hkHolidaysSet.add(formattedDate);
+                            parsedHolidays.push(formattedDate);
                         }
                     });
+                    if(parsedHolidays.length > 0) HK_HOLIDAYS_2026 = parsedHolidays;
                 }
-            } catch (error) {
-                console.log('正在使用內置香港法定假期數據庫。');
+            } catch (e) {
+                console.warn("Using fallback static 2026 holidays due to API limitation:", e);
             }
-            updateTracker();
         }
 
+        // --- 核心倒數與動態即時排程引擎 ---
         function updateTracker() {
             const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            let currentTimeWeight = hours * 60 + minutes;
+            
+            // 香港時間標準偏移修正 (UTC+8)
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const hktTime = new Date(utc + (3600000 * 8));
 
-            document.getElementById('clock').innerText = 
-                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            let hours = hktTime.getHours();
+            let minutes = hktTime.getMinutes();
+            let seconds = hktTime.getSeconds();
+
+            const timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            const clockEl = document.getElementById('clock');
+            if(clockEl) clockEl.innerText = timeStr;
+
+            const yyyy = hktTime.getFullYear();
+            const mm = String(hktTime.getMonth() + 1).padStart(2, '0');
+            const dd = String(hktTime.getDate()).padStart(2, '0');
+            const dateISO = `${yyyy}-${mm}-${dd}`;
+            const dayOfWeek = hktTime.getDay(); 
 
             let isWeekendOrHoliday = false;
-            let dayTypeLabel = "今日：星期一至五";
-            const dayOfWeek = now.getDay(); 
-            
-            const todayStr = now.getFullYear() + '-' + 
-                             String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-                             String(now.getDate()).padStart(2, '0');
+            let dayBadgeText = translations[currentLang].dayWeekday;
 
-            if (hkHolidaysSet.has(todayStr)) {
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
                 isWeekendOrHoliday = true;
-                dayTypeLabel = "今日：公眾假期";
-            } else if (dayOfWeek === 0 || dayOfWeek === 6) {
+                dayBadgeText = translations[currentLang].dayWeekend;
+            }
+            if (HK_HOLIDAYS_2026.includes(dateISO)) {
                 isWeekendOrHoliday = true;
-                dayTypeLabel = "今日：週末六日";
+                dayBadgeText = translations[currentLang].dayHoliday;
             }
 
-            const badge = document.getElementById('day-type-badge');
-            badge.innerText = dayTypeLabel;
-            
-            if (hkHolidaysSet.has(todayStr)) {
-                badge.style.backgroundColor = "#fff3e0";
-                badge.style.color = "#e65100";
-            } else if (dayOfWeek === 0 || dayOfWeek === 6) {
-                badge.style.backgroundColor = "#e8f5e9";
-                badge.style.color = "#2e7d32";
-            } else {
-                badge.style.backgroundColor = "#e1f5fe";
-                badge.style.color = "#0288d1";
-            }
+            const badgeEl = document.getElementById('day-type-badge');
+            if(badgeEl) badgeEl.innerText = dayBadgeText;
 
-            const activeScheduleList = isWeekendOrHoliday ? 
-                ALL_STATIONS_DATA[currentStation].schedule.weekend : 
-                ALL_STATIONS_DATA[currentStation].schedule.weekday;
+            const currentStationData = ALL_STATIONS_DATA[currentStation];
+            const fullList = isWeekendOrHoliday ? currentStationData.schedule.weekend : currentStationData.schedule.weekday;
 
+            const currentTimeWeight = (hours * 60) + minutes;
             const upcoming = [];
 
-            for (let i = 0; i < activeScheduleList.length; i++) {
-                const busObj = activeScheduleList[i];
+            for (let i = 0; i < fullList.length; i++) {
+                const busObj = fullList[i];
                 const busHour = parseInt(busObj.t.substring(0, 2));
                 const busMin = parseInt(busObj.t.substring(2, 4));
-                let busTimeWeight = busHour * 60 + busMin;
+                let busTimeWeight = (busHour * 60) + busMin;
 
-                if (hours >= 22 && busHour <= 1) {
+                if (busHour === 0 || busHour === 1) {
                     busTimeWeight += 24 * 60;
-                } else if (hours <= 1 && busHour >= 22) {
-                    continue;
                 }
-                
-                if (busTimeWeight >= currentTimeWeight) {
-                    const diffMin = busTimeWeight - currentTimeWeight;
+
+                let relativeCurrentWeight = currentTimeWeight;
+
+                if (busTimeWeight >= relativeCurrentWeight) {
+                    const diffMin = busTimeWeight - relativeCurrentWeight;
                     upcoming.push({
                         time: `${String(busHour).padStart(2, '0')}:${String(busMin).padStart(2, '0')}`,
-                        route: busObj.r,
+                        route: translations[currentLang].routeLabels[busObj.r_key] || 'Bus',
                         className: busObj.c,
                         minutesLeft: diffMin
                     });
-
                     if (upcoming.length === 3) break;
                 }
             }
 
             const container = document.getElementById('bus-container');
+            if (!container) return;
             container.innerHTML = '';
 
             if (upcoming.length === 0) {
-                container.innerHTML = `<div class="no-bus">今日班次已完結啦！<br>尾班車為 ${ALL_STATIONS_DATA[currentStation].lastBus}</div>`;
+                container.innerHTML = `<div class="no-bus">${translations[currentLang].busEnded}${currentStationData.lastBus}</div>`;
                 return;
             }
 
@@ -798,30 +1040,38 @@
                 const card = document.createElement('div');
                 card.className = `bus-card ${bus.className} ${index === 0 ? 'next' : ''}`;
                 
+                let countdownContent = ``;
+                if (bus.minutesLeft === 0) {
+                    countdownContent = `<span style="font-size:16px; color:#2e7d32; font-weight:bold;">${translations[currentLang].arrivingSoon}</span>`;
+                } else {
+                    countdownContent = `${bus.minutesLeft}<span class="unit">${translations[currentLang].unitMinLeft}</span>`;
+                }
+
                 card.innerHTML = `
                     <div class="bus-info">
                         <div class="bus-time">
-                            ${bus.time} 
-                            ${index === 0 ? '<span style="font-size:12px; color:#2e7d32; background:#c8e6c9; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:bold;">即將到站</span>' : ''}
+                            ${bus.time}
+                            ${index === 0 && bus.minutesLeft === 0 ? `<span style="font-size:12px; color:#2e7d32; background:#c8e6c9; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:bold;">${translations[currentLang].arrivingSoon}</span>` : ''}
                         </div>
                         <div class="bus-route">${bus.route}</div>
                     </div>
                     <div class="countdown-container">
-                        <div class="countdown">${bus.minutesLeft}<span class="unit">分鐘後</span></div>
+                        <div class="countdown">${countdownContent}</div>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
+        // --- 生命週期啟動程序 ---
         window.addEventListener('DOMContentLoaded', () => {
             const savedStation = localStorage.getItem('selectedStation');
             const savedTab = localStorage.getItem('selectedTab');
+            const savedLang = localStorage.getItem('preferred-shuttle-lang') || 'zh-HK';
 
             if (savedStation && ALL_STATIONS_DATA[savedStation]) {
                 currentStation = savedStation;
             }
-            document.getElementById('station-select').value = currentStation;
             
             if (savedTab === 'weekday' || savedTab === 'weekend') {
                 currentTab = savedTab;
@@ -829,34 +1079,15 @@
 
             document.getElementById('layout-container').className = `main-layout station-${currentStation}`;
             
+            switchLang(savedLang);
             switchTab(currentTab);
-            renderFullTimetableGrid();
-            fetchHKHolidays();
+            
+            fetchHKHolidays().then(() => {
+                updateTracker();
+            });
+            
             setInterval(updateTracker, 1000);
         });
     </script>
 </body>
-<div class="info-section" style="padding: 20px; max-width: 900px; margin: 20px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); line-height: 1.6;">
-    <h2 style="color: #1a2a3a; font-size: 18px; margin-bottom: 10px; border-bottom: 2px solid #007aff; padding-bottom: 5px;">映灣園住戶專車（屋苑巴士）乘車攻略</h2>
-    <p>歡迎使用映灣園住戶專車快捷查詢系統！本專車主要為映灣園居民提供往返東涌地鐵站及屋苑各期的接駁服務。為了讓大家出門時間預算更準確，本站提供即時倒數計時功能，建議街坊將本網頁「新增至手機主畫面」，方便每日出門前一鍵查看最新班次。</p>
-
-    <h3 style="color: #2c3e50; font-size: 15px; margin-top: 15px; margin-bottom: 5px;">🚌 乘車須知與小貼士</h3>
-    <ul style="padding-left: 20px; list-style-type: disc;">
-        <li><strong>拍卡安排：</strong> 居民乘車時須使用已登記映灣園住戶住戶證之八達通拍卡上車。</li>
-        <li><strong>繁忙時間提示：</strong> 早上 07:30 - 09:00 及傍晚 18:00 - 19:30 為上學及上下班尖峰時間，班次雖密，但候車人數較多。</li>
-        <li><strong>車線分流：</strong> 請留意不同時段之路線變更（如 A 線、B 線、循環線等），本站已根據官方時間表進行標示。</li>
-    </ul>
-
-    <h3 style="color: #2c3e50; font-size: 15px; margin-top: 15px; margin-bottom: 5px;">🌀 惡劣天氣（颱風及暴雨）班次安排</h3>
-    <ul style="padding-left: 20px; list-style-type: disc;">
-        <li><strong>一號 / 三號颱風信號、黃色 / 紅色 / 黑色暴雨警告：</strong> 住戶專車一般維持正常服務，惟路面交通可能受阻，班次或稍有延誤。</li>
-        <li><strong>當八號信號正式生效後，專車通常會在有限度運作一段時間後全面暫停服務</strong>，直至改掛三號風球後，視乎路面安全情況逐步恢復。詳情請留意物業管理處之通知。</li>
-    </ul>
-</div>
-<footer style="text-align: center; padding: 20px; font-size: 12px; color: #777; border-top: 1px solid #ddd; margin-top: 40px; line-height: 1.8;">
-    <p><strong>免責聲明 (Disclaimer)：</strong> 本網頁為映灣園熱心住戶自發製作之非官方工具，旨在方便街坊查詢班次，<strong>並非</strong> 映灣園物業管理處、業主委員會或穿梭巴士營運商之官方網頁。本站所提供之班次時間及倒數資料僅供參考，實際班次運作、開出時間及路線調整，均以物業管理處及現場巴士司機之最終決定為準。本站不對因班次誤差而導致的任何損失承擔責任。</p>
-    
-    <p style="margin-top: 10px;"><strong>隱私政策 (Privacy Policy)：</strong> 本站充分尊重用戶隱私。我們<strong>不會</strong> 收集、記錄或追蹤您的任何個人識別資料（如姓名、電話或定位）。網頁僅使用瀏覽器之本地儲存空間 (LocalStorage) 記錄您上次選擇的車站偏好。站內之廣告由第三方廣告平台（如 Google AdSense）提供，廣告商可能會使用 Cookie 以提供與您相關的廣告內容。您可以透過瀏覽器設定隨時拒絕或刪除相關 Cookie。</p>
-    <p>© 2026 映灣園住戶專車時段查詢工具（非官方）</p>
-</footer>
 </html>
