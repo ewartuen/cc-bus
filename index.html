@@ -6,6 +6,7 @@
     
     <!-- 動態 SEO Meta 標籤 -->
     <title id="meta-title">映灣園住戶專車時間表</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta id="meta-desc" name="description" content="提供東涌映灣園1號站、2號站及3號站的屋苑專車即時班次倒數與完整時間表。自動對接香港公眾假期，精確掌握各路線開車時間，街坊必備的搭車工具。">
     <meta name="keywords" content="映灣園, 映灣園巴士, 屋苑專車, 居民巴士, 映灣園時間表, 東涌屋苑巴士, Caribbean Coast, Residents Bus, Shuttle Schedule">
     <meta name="author" content="Caribbean Coast Community">
@@ -475,6 +476,8 @@
     <!-- 頁尾免責與隱私聲明 -->
     <footer id="footer-block"></footer>
 
+<script src="js/schedule.js"></script>
+
     <script>
         // ================= 三語系核心純量字典（中英完全分離） =================
         const translations = {
@@ -645,387 +648,6 @@
             }
         };
 
-        // --- 全路線全時段動態生成輔助工具 ---
-        function generateStrict5MinPattern(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                for (let m = 0; m < 60; m += 5) {
-                    const minStr = String(m).padStart(2, '0');
-                    result.push({ t: `${prefix}${minStr}`, r_key: "a", c: "route-a", tc: "t-a" });
-                }
-            }
-            return result;
-        }
-
-        // 2站相關輔助生成器
-        function generateHourlyPattern2站平日日間(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                const mins = ["02","07","14","19","26","31","38","43","50","55"];
-                mins.forEach((m, idx) => {
-                    const r = idx % 2 === 0 ? "b" : "a";
-                    result.push({ t: `${prefix}${m}`, r_key: r, c: `route-${r}`, tc: `t-${r}` });
-                });
-            }
-            return result;
-        }
-
-        function generateHourlyPattern2站平日黃昏段(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                const mins = ["00","06","12","18","24","30","36","42","48","54"];
-                mins.forEach((m, idx) => {
-                    const r = idx % 2 === 0 ? "b" : "a";
-                    result.push({ t: `${prefix}${m}`, r_key: r, c: `route-${r}`, tc: `t-${r}` });
-                });
-            }
-            return result;
-        }
-
-        // 3站相關輔助生成器
-        function generateHourlyPattern3站平日日間(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                const mins = ["05","17","29","41","53"];
-                mins.forEach(m => {
-                    result.push({ t: `${prefix}${m}`, r_key: "a", c: "route-a", tc: "t-a" });
-                });
-            }
-            return result;
-        }
-
-        function generateHourlyPattern3站平日十鐘段(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                const mins = ["00","10","20","30","40","50"];
-                mins.forEach(m => {
-                    result.push({ t: `${prefix}${m}`, r_key: "b", c: "route-b", tc: "t-b" });
-                });
-            }
-            return result;
-        }
-
-        function generateHourlyPattern3站假日十鐘段(startHour, endHour) {
-            return generateHourlyPattern3站平日十鐘段(startHour, endHour);
-        }
-
-        // --- 各站核心數據庫定義 ---
-        const ALL_STATIONS_DATA = {
-            "1": {
-                lastBus: "01:15",
-                schedule: {
-                    weekday: [
-                        { t: "0542", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0548", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0600", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0607", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0615", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0622", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0630", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0637", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0645", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0652", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0701", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0709", r_key: "c", c: "route-c", tc: "t-c" },
-                        { t: "0717", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0725", r_key: "c", c: "route-c", tc: "t-c" },
-                        { t: "0733", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0741", r_key: "c", c: "route-c", tc: "t-c" },
-                        { t: "0749", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0755", r_key: "c", c: "route-c", tc: "t-c" },
-                        { t: "0801", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0807", r_key: "c", c: "route-c", tc: "t-c" },
-                        { t: "0815", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0823", r_key: "c", c: "route-c", tc: "t-c" },
-                        { t: "0831", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0838", r_key: "c", c: "route-c", tc: "t-c" },
-                        { t: "0845", r_key: "c", c: "route-c", tc: "t-c" }, { t: "0855", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0905", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0917", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0929", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0941", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0953", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1005", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1017", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1029", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1041", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1053", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1105", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1117", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1129", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1141", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1153", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1205", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1217", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1229", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1241", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1253", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1305", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1317", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1329", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1341", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1353", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1405", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1417", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1429", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1441", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1453", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1505", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1515", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1525", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1535", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1545", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1555", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1605", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1615", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1625", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1635", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1645", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1655", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1705", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1715", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1725", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1735", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1745", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1755", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1805", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1815", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1825", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1835", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1845", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1854", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1901", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1908", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1915", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1922", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1929", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1936", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1943", r_key: "a", c: "route-a", tc: "t-a" }, { t: "1950", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1957", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2005", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2015", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2025", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2035", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2045", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2055", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2105", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2115", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2125", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2135", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2145", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2155", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2205", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2215", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2225", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2235", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2245", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2255", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2300", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2312", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2324", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2336", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2348", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0000", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0015", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0030", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0045", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0100", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0115", r_key: "a", c: "route-a", tc: "t-a" }
-                    ],
-                    weekend: [
-                        { t: "0540", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0600", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0607", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0622", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0630", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0637", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0652", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        ...generateHourlyPattern1站(7, 21),
-                        { t: "2205", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2215", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2225", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2235", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2245", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2255", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2300", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2312", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2324", r_key: "a", c: "route-a", tc: "t-a" }, { t: "2336", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2348", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0000", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0015", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0030", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0045", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0100", r_key: "a", c: "route-a", tc: "t-a" }, { t: "0115", r_key: "a", c: "route-a", tc: "t-a" }
-                    ]
-                }
-            },
-            "2": {
-                lastBus: "01:17",
-                schedule: {
-                    weekday: [
-                        { t: "0540", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0550", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0602", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0605", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0617", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0620", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0632", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0635", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0647", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0650", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0702", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0710", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0718", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0726", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0732", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0738", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0744", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0750", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0756", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0802", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0808", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0814", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0820", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0826", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0832", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0839", r_key: "d", c: "route-d", tc: "t-d" },
-                        { t: "0846", r_key: "d", c: "route-d", tc: "t-d" }, { t: "0852", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "0857", r_key: "a", c: "route-a", tc: "t-a" },
-                        ...generateHourlyPattern2站平日日間(9, 13), 
-                        { t: "1402", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1407", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1414", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1419", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1426", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1431", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1438", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1443", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "1452", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1455", r_key: "a", c: "route-a", tc: "t-a" },
-                        ...generateHourlyPattern2站平日黃昏段(15, 19), 
-                        ...generateStrict5MinPattern(20, 22),
-                        { t: "2302", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2314", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2326", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2338", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2350", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0002", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0017", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0032", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0047", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0102", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0117", r_key: "a", c: "route-a", tc: "t-a" }
-                    ],
-                    weekend: [
-                        { t: "0542", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0602", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0605", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0620", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0632", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0635", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        { t: "0650", r_key: "circular", c: "route-circular", tc: "t-circular" },
-                        ...generateStrict5MinPattern(7, 22),
-                        { t: "2302", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2314", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2326", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2338", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "2350", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0002", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0017", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0032", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0047", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0102", r_key: "a", c: "route-a", tc: "t-a" },
-                        { t: "0117", r_key: "a", c: "route-a", tc: "t-a" }
-                    ]
-                }
-            },
-            "3": {
-                lastBus: "22:50",
-                schedule: {
-                    weekday: [
-                        { t: "0700", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0710", r_key: "e", c: "route-e", tc: "t-e" },
-                        { t: "0720", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0730", r_key: "e", c: "route-e", tc: "t-e" },
-                        { t: "0740", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0750", r_key: "e", c: "route-e", tc: "t-e" },
-                        { t: "0800", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0810", r_key: "e", c: "route-e", tc: "t-e" },
-                        { t: "0820", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0830", r_key: "e", c: "route-e", tc: "t-e" },
-                        { t: "0840", r_key: "e", c: "route-e", tc: "t-e" }, { t: "0850", r_key: "b", c: "route-b", tc: "t-b" },
-                        ...generateHourlyPattern3站平日日間(9, 14),
-                        ...generateHourlyPattern3站平日十鐘段(15, 17),
-                        { t: "1800", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1810", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "1820", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1830", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "1840", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1850", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "1858", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "1905", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1912", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "1919", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1926", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "1933", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1940", r_key: "b", c: "route-b", tc: "t-b" },
-                        { t: "1947", r_key: "b", c: "route-b", tc: "t-b" }, { t: "1954", r_key: "b", c: "route-b", tc: "t-b" },
-                        ...generateHourlyPattern3站平日十鐘段(20, 22)
-                    ],
-                    weekend: [
-                        ...generateHourlyPattern3站假日十鐘段(7, 22)
-                    ]
-                }
-            }
-        };
-
-        // --- 輔助函數 ---
-        function generateHourlyPattern1站(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}05`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}15`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}25`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}35`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}45`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}55`, r_key: "a", c: "route-a", tc: "t-a" }
-                );
-            }
-            return result;
-        }
-
-        function generateStrict5MinPattern(startHour, endHour) {
-            const result = [];
-            const minutesPattern = ["02", "07", "12", "17", "22", "27", "32", "37", "42", "47", "52", "57"];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                minutesPattern.forEach(m => {
-                    const isEven = parseInt(m) % 2 === 0;
-                    result.push({
-                        t: `${prefix}${m}`,
-                        r_key: isEven ? "b" : "a",
-                        c: isEven ? "route-b" : "route-a",
-                        tc: isEven ? "t-b" : "t-a"
-                    });
-                });
-            }
-            return result;
-        }
-
-        function generateHourlyPattern2站平日日間(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}02`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}07`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}14`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}19`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}26`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}31`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}38`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}43`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}50`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}55`, r_key: "a", c: "route-a", tc: "t-a" }
-                );
-            }
-            return result;
-        }
-
-        function generateHourlyPattern2站平日黃昏段(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}02`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}07`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}12`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}17`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}22`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}27`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}32`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}37`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}42`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}47`, r_key: "a", c: "route-a", tc: "t-a" },
-                    { t: `${prefix}52`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}57`, r_key: "a", c: "route-a", tc: "t-a" }
-                );
-            }
-            return result;
-        }
-
-        function generateHourlyPattern3站平日日間(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}00`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}12`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}24`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}36`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}48`, r_key: "b", c: "route-b", tc: "t-b" }
-                );
-            }
-            return result;
-        }
-
-        function generateHourlyPattern3站平日十鐘段(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}00`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}10`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}20`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}30`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}40`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}50`, r_key: "b", c: "route-b", tc: "t-b" }
-                );
-            }
-            return result;
-        }
-
-        function generateHourlyPattern3站假日十鐘段(startHour, endHour) {
-            const result = [];
-            for (let h = startHour; h <= endHour; h++) {
-                const prefix = String(h).padStart(2, '0');
-                result.push(
-                    { t: `${prefix}00`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}10`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}20`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}30`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}40`, r_key: "b", c: "route-b", tc: "t-b" },
-                    { t: `${prefix}50`, r_key: "b", c: "route-b", tc: "t-b" }
-                );
-            }
-            return result;
-        }
-
         // --- 狀態控制中心 ---
         let currentLang = "zh-HK";
         let currentStation = "3";
@@ -1161,28 +783,42 @@
             });
         }
 
-        async function fetchHKHolidays() {
-            try {
-                const response = await fetch('https://www.1823.gov.hk/common/ical/en.json');
-                if (!response.ok) throw new Error('Official API load failed');
-                const data = await response.json();
-                const holidays = data.vcalendar[0].vevent;
-                if (Array.isArray(holidays)) {
-                    const parsedHolidays = [];
-                    holidays.forEach(h => {
-                        if (h.dtstart && h.dtstart[0]) {
-                            const rawDate = h.dtstart[0];
-                            const formattedDate = `${rawDate.substring(0, 4)}-${rawDate.substring(4, 6)}-${rawDate.substring(6, 8)}`;
-                            parsedHolidays.push(formattedDate);
-                        }
-                    });
-                    if(parsedHolidays.length > 0) HK_HOLIDAYS_2026 = parsedHolidays;
-                }
-            } catch (e) {
-                console.warn("Using fallback static 2026 holidays due to API limitation:", e);
-            }
-        }
+async function fetchHKHolidays() {
+    const targetUrl = 'https://www.1823.gov.hk/common/ical/en.json';
+    // Using the /raw endpoint of AllOrigins completely avoids proxy wrapping and CORS blocks
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
 
+    try {
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error("CORS Proxy Server Error");
+        
+        // The raw endpoint delivers the GovHK JSON directly to your app
+        const holidayData = await response.json(); 
+        
+        if (holidayData && holidayData.vcalendar && holidayData.vcalendar[0] && holidayData.vcalendar[0].vevent) {
+            const events = holidayData.vcalendar[0].vevent;
+            window.HK_HOLIDAYS_SET = new Set();
+            
+            events.forEach(evt => {
+                if (evt.dtstart && evt.dtstart[0]) {
+                    let dateStr = evt.dtstart[0]; // Format: "20260101"
+                    if (dateStr.length >= 8) {
+                        let formatted = `${dateStr.substring(0,4)}-${dateStr.substring(4,6)}-${dateStr.substring(6,8)}`;
+                        window.HK_HOLIDAYS_SET.add(formatted);
+                    }
+                }
+            });
+            
+            // Sync your live fetched array to the system array
+            HK_HOLIDAYS_2026 = Array.from(window.HK_HOLIDAYS_SET);
+            console.log("Successfully updated live HK Holidays via proxy. Count:", HK_HOLIDAYS_2026.length);
+        }
+    } catch (error) {
+        // Silencing loud server exceptions while seamlessly preserving app performance
+        console.warn("API notice: Utilizing internal static 2026 holiday calendar configuration.");
+        window.HK_HOLIDAYS_SET = new Set(HK_HOLIDAYS_2026);
+    }
+}
         // --- 核心倒數與動態即時排程引擎 ---
         function updateTracker() {
             const now = new Date();
@@ -1223,8 +859,14 @@
             const currentStationData = ALL_STATIONS_DATA[currentStation];
             const fullList = isWeekendOrHoliday ? currentStationData.schedule.weekend : currentStationData.schedule.weekday;
 
-            const currentTimeWeight = (hours * 60) + minutes;
+const currentTimeWeight = (hours * 60) + minutes;
             const upcoming = [];
+
+            // === 修正點 1：若當前時間已入凌晨，同步提高當前權重，防止午夜後倒數時間暴增 ===
+            let relativeCurrentWeight = currentTimeWeight;
+            if (hours === 0 || hours === 1) {
+                relativeCurrentWeight += 24 * 60;
+            }
 
             for (let i = 0; i < fullList.length; i++) {
                 const busObj = fullList[i];
@@ -1236,8 +878,6 @@
                     busTimeWeight += 24 * 60;
                 }
 
-                let relativeCurrentWeight = currentTimeWeight;
-
                 if (busTimeWeight >= relativeCurrentWeight) {
                     const diffMin = busTimeWeight - relativeCurrentWeight;
                     upcoming.push({
@@ -1246,7 +886,6 @@
                         className: busObj.c,
                         minutesLeft: diffMin
                     });
-                    if (upcoming.length === 3) break;
                 }
             }
 
@@ -1259,7 +898,10 @@
                 return;
             }
 
-            upcoming.forEach((bus, index) => {
+            // === 修正點 2：安全切片，確保畫面永遠只顯示最多 3 班車，不會把頁面拉到無限長 ===
+            const displayBuses = upcoming.slice(0, 3);
+
+            displayBuses.forEach((bus, index) => {
                 const card = document.createElement('div');
                 card.className = `bus-card ${bus.className} ${index === 0 ? 'next' : ''}`;
                 
@@ -1284,15 +926,20 @@
                 `;
                 container.appendChild(card);
             });
-        }
+}
 
-        // --- 生命週期啟動程序 ---
+// --- 生命週期啟動程序（完全非阻塞重構） ---
         window.addEventListener('DOMContentLoaded', () => {
             const savedStation = localStorage.getItem('selectedStation');
             const savedTab = localStorage.getItem('selectedTab');
             const savedLang = localStorage.getItem('preferred-shuttle-lang') || 'zh-HK';
 
-            if (savedStation && ALL_STATIONS_DATA[savedStation]) {
+            // 防禦性數據庫物件檢查避免死機
+            if (!window.ALL_STATIONS_DATA) {
+                window.ALL_STATIONS_DATA = { "1": { schedule: { weekday:[], weekend:[] } }, "2": { schedule: { weekday:[], weekend:[] } }, "3": { schedule: { weekday:[], weekend:[] } } };
+            }
+
+            if (savedStation && window.ALL_STATIONS_DATA[savedStation]) {
                 currentStation = savedStation;
             }
             
@@ -1300,15 +947,23 @@
                 currentTab = savedTab;
             }
 
-            document.getElementById('layout-container').className = `main-layout station-${currentStation}`;
+            const layout = document.getElementById('layout-container');
+            if(layout) layout.className = `main-layout station-${currentStation}`;
             
+            // 1. 本地環境優先初始化（跳過網路請求，第一時間呈現畫面）
             switchLang(savedLang);
             switchTab(currentTab);
+            renderFullTimetableGrid();
+            updateTracker();
             
+            // 2. 異步默默更新公眾假期，無論拋錯或成功都不影響上面畫面的渲染
             fetchHKHolidays().then(() => {
                 updateTracker();
+            }).catch(() => {
+                console.log("Safely bypassed CORS API block in file:// local context.");
             });
             
+            // 3. 穩健啟動每秒時鐘
             setInterval(updateTracker, 1000);
         });
     </script>
